@@ -1,4 +1,4 @@
-import { Component, computed, signal, effect } from '@angular/core';
+import { Component, computed, signal, effect, Injector, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -14,33 +14,33 @@ import { Task } from './../../models/tasks.model'
 
 export class HomeComponent {
 
-  tasks = signal<Task[]>([
-    {
-      id: Date.now(),
-      title: 'Crear proyecto',
-      completed: false
-    },
-    {
-      id: Date.now(),
-      title: 'Crear componentes',
-      completed: false
-    },
-  ]);
+  tasks = signal<Task[]>([]);
 
   newTaskCtrl = new FormControl('', {
     nonNullable: true,
     validators: [
       Validators.required,
-      //Validators.pattern('^\\S.*$'),
+      Validators.pattern('^\\S.*$'),
       Validators.minLength(3),
     ]
   })
 
-  constructor () {
+  injector = inject(Injector);
+
+  ngOnInit() {
+    const storage = localStorage.getItem('tasks');
+    if (storage) {
+      const tasks = JSON.parse(storage)
+      this.tasks.set(tasks)
+    }
+  }
+
+  trackTasks() {
     effect(() => {
       const tasks = this.tasks()
-      console.log('run effect')
-    })
+      console.log(tasks)
+      localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, { injector: this.injector})
   }
 
   filter = signal<'all' | 'pending' | 'completed'>('all');
@@ -55,6 +55,7 @@ export class HomeComponent {
     }
     return tasks;
   })
+  
   tasksLeft = computed (() => {
     const tasks = this.tasks();
     return tasks.filter(task => !task.completed).length
