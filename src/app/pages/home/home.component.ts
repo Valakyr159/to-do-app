@@ -38,7 +38,8 @@ export class HomeComponent {
 
   constructor () {
     effect(() => {
-      
+      const tasks = this.tasks()
+      console.log('run effect')
     })
   }
 
