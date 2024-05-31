@@ -1,83 +1,139 @@
 <div class="container">
-    <h1>Hola mi primer proyecto</h1>
-    <h2>{{welcome}}</h2>
-    <ul>
-        <li *ngFor="let task of tasks()">
-            {{task}}
-        </li>
-    </ul>
-    
-    <hr />
-    
-    <h2>{{ 'Hola'.repeat(4) }}</h2>
-    <p> la suma de 3 + 3 es {{3+3}}</p>
-    <p>Hola soy {{name()}} y mi edad es {{age}}</p>
-    <hr />
-    <img [src]="img" alt="hello">
-    <input type="number" [value]="person().age">
-    <button [disabled]=disabled>Click me</button>
-    <p>person: {{person().name}}</p>
-    
-    <hr />
-    
-    <button (click)="clickHandler()">click me</button>
-    <hr />
-    <button (dblclick)="dblclickHandler()">click me twice</button>
-    <p>(change)</p>
-    <input type="number" [value]="person().age" (change)=changeHandler($event)>
-    <p>(keydown)</p>
-    <input type="text" [value]="person().name" (keydown)=keydownHandler($event)>
-    <p>(keydown shift)</p>
-    <input type="text" [value]="person().name" (keydown.shift.t)=clickHandler()>
-    <hr />
-    <h1>Signals</h1>
-    <input type="text" [value]="name()" (change)=changeHandler($event)>
-    <p>name: {{ name() }}</p>
-    <p>(keyup Reactive)</p>
-    <input type="text" [value]="name()" (keyup)=keydownReactiveHandler($event)>
-    <ul>
-        <p>total: {{ tasks().length }}</p>
-        <li *ngFor="let task of tasks(); index as i">
-            {{ i+1 }}. {{task}}
-        </li>
-    </ul>
-    <hr />
-    <div *ngIf="name() === 'Javier'">
-        Soy Javier
-    </div>
-    <input type="number" [value]="person().age" (change)=changeAgeHandler($event)>
-    <div *ngIf="person().name === 'Javier' && person().age > 18; else elseBlock">
-        y soy mayor de 18 años
-    </div>
-    <ng-template #elseBlock>
-        y soy menor de 18 años
-    </ng-template>
-    <hr />
-    <input type="text" [value]="person().name" (change)=changeNameHandler($event)>
-    <div [ngSwitch]="person().name">
-        <p *ngSwitchCase="'Javier'">Yo soy Javier</p>
-        <p *ngSwitchCase="'Nicolás'">Yo soy Nicolás</p>
-        <p *ngSwitchCase="'Valentina'">Yo soy Valentina</p>
-        <p *ngSwitchCase="'Ana'">Yo soy Ana</p>
-        <p *ngSwitchDefault>Yo no soy nadie</p>
-    </div>
-    <hr />
-    <input type="color" [formControl]="colorCtrl">
-    <p>color: {{ colorCtrl.value }}</p>
-    <svg>
-        <g>
-            <rect x="0" y="0" height="100" width="100" [attr.fill]="colorCtrl.value" />
-        </g>
-    </svg>
-    <hr />
-    <input type="number" [formControl]="widthCtrl">
-    <span class="box" [style.width.px]="widthCtrl.value"></span>
-    <hr />
-    <p>
-        <input type="text" [formControl]="nameCtrl"> <br />
-        <span class="message-error" [class.mostrar]="nameCtrl.invalid && nameCtrl.touched">Nombre incorrecto</span>
-    </p>
-    <p>
-        <input type="text">
-    </p>
+  <h1>Hola mi primer proyecto</h1>
+  <h2>{{welcome}}</h2>
+  <ul>
+    @for (task of tasks(); track task) {
+    <li>
+      {{task}}
+    </li>
+    }
+  </ul>
+
+  <hr />
+
+  <h2>{{ 'Hola'.repeat(4) }}</h2>
+  <p> la suma de 3 + 3 es {{3+3}}</p>
+  <p>Hola soy {{name()}} y mi edad es {{age}}</p>
+  <hr />
+  <img [src]="img" alt="hello">
+  <input type="number" [value]="person().age">
+  <button [disabled]=disabled>Click me</button>
+  <p>person: {{person().name}}</p>
+
+  <hr />
+
+  <button (click)="clickHandler()">click me</button>
+  <hr />
+  <button (dblclick)="dblclickHandler()">click me twice</button>
+  <p>(change)</p>
+  <input type="number" [value]="person().age" (change)=changeHandler($event)>
+  <p>(keydown)</p>
+  <input type="text" [value]="person().name" (keydown)=keydownHandler($event)>
+  <p>(keydown shift)</p>
+  <input type="text" [value]="person().name" (keydown.shift.t)=clickHandler()>
+  <hr />
+  <h1>Signals</h1>
+  <input type="text" [value]="name()" (change)=changeHandler($event)>
+  <p>name: {{ name() }}</p>
+  <p>(keyup Reactive)</p>
+  <input type="text" [value]="name()" (keyup)=keydownReactiveHandler($event)>
+  <ul>
+    <p>total: {{ tasks().length }}</p>
+    @for (task of tasks(); track task; let i = $index) {
+    <li>
+      {{ i+1 }}. {{task}}
+    </li>
+    }
+  </ul>
+  <hr />
+  @if (name() === 'Javier') {
+  <div>
+    Soy Javier
+  </div>
+  }
+  <input type="number" [value]="person().age" (change)=changeAgeHandler($event)>
+  @if (person().name === 'Javier' && person().age > 18) {
+  <div>
+    y soy mayor de 18 años
+  </div>
+  } @else {
+  y soy menor de 18 años
+  }
+  <hr />
+  <input type="text" [value]="person().name" (change)=changeNameHandler($event)>
+  <div>
+    @switch (person().name) {
+    @case ('Javier') {
+    <p>Yo soy Javier</p>
+    }
+    @case ('Nicolás') {
+    <p>Yo soy Nicolás</p>
+    }
+    @case ('Valentina') {
+    <p>Yo soy Valentina</p>
+    }
+    @case ('Ana') {
+    <p>Yo soy Ana</p>
+    }
+    @default {
+    <p>Yo no soy nadie</p>
+    }
+    }
+  </div>
+  <hr />
+  <input type="color" [formControl]="colorCtrl">
+  <p>color: {{ colorCtrl.value }}</p>
+  <svg>
+    <g>
+      <rect x="0" y="0" height="100" width="100" [attr.fill]="colorCtrl.value" />
+    </g>
+  </svg>
+  <hr />
+  <input type="number" [formControl]="widthCtrl">
+  <span class="box" [style.width.px]="widthCtrl.value"></span>
+  <hr />
+  <p>
+    <input type="text" [formControl]="nameCtrl"> <br />
+    <span class="message-error" [class.mostrar]="nameCtrl.invalid && nameCtrl.touched">Nombre incorrecto</span>
+  </p>
+  <p>
+    <input type="text">
+  </p>
+  <hr />
+  <h2>New For</h2>
+  <ul>
+    <p>total: {{ tasks().length }}</p>
+    @for (task of tasks(); track task; let i = $index) {
+    <li>
+      {{ i+1 }}. {{task}}
+    </li>
+    }
+  </ul>
+  <ul>
+    @for (task of tasks(); track task; let i = $index) {
+    <li>{{i}}{{task}}</li>
+    } @empty {
+    <li><strong>La lista está en vacío</strong></li>
+    }
+  </ul>
+  <h2>New Switch</h2>
+  <div>
+    @switch (person().name) {
+    @case ('Javier') {
+    <p>Yo soy Javier</p>
+    }
+    @case ('Nicolás') {
+    <p>Yo soy Nicolás</p>
+    }
+    @case ('Valentina') {
+    <p>Yo soy Valentina</p>
+    }
+    @case ('Ana') {
+    <p>Yo soy Ana</p>
+    }
+    @default {
+    <p>Yo no soy nadie</p>
+    }
+    }
+  </div>
 </div>
